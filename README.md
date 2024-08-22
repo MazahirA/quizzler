@@ -1,6 +1,9 @@
 # quizzler
 
 A Flutter app where you can test your general knowledge.
+This project is learned and inspired by Angela.
+You can find her work here:
+https://github.com/londonappbrewery/quizzler-flutter
 
 ## Getting Started
 
