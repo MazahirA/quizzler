@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/quizz_store.dart';
 
 class QuizApp extends StatefulWidget {
   const QuizApp({super.key});
@@ -10,10 +11,11 @@ class QuizApp extends StatefulWidget {
 class _QuizAppState extends State<QuizApp> {
   int questionNumber = 0;
   var questionAnswers = [
-    {"q": "this is question 1", "a": true},
-    {"q": "this is question 2", "a": false},
-    {"q": "this is question 3", "a": true},
-    {"q": "this is question 4", "a": false}
+  Quiz(question: "Question 1", answer: true),
+  Quiz(question: "Question 2", answer: false),
+  Quiz(question: "Question 3", answer: false),
+  Quiz(question: "Question 4", answer: true),
+  Quiz(question: "Question 5", answer: false),
   ];
   @override
   Widget build(BuildContext context) {
@@ -89,13 +91,13 @@ class _QuizAppState extends State<QuizApp> {
     if (questionNumber > questionAnswers.length - 1) {
       return 'Quiz ended.';
     }
-    var question = questionAnswers[questionNumber];
-    return '${question["q"]}';
+    var question = questionAnswers[questionNumber].question;
+    return question;
   }
 
   List<Icon> resultWidgets = [];
   List<Icon> getAnswers({required bool isTruePressed}) {
-    print('questionNumber: $questionNumber');
+    debugPrint('questionNumber: $questionNumber');
     if (questionNumber > questionAnswers.length - 1) {
       resultWidgets.clear();
       setState(() {
@@ -103,8 +105,8 @@ class _QuizAppState extends State<QuizApp> {
       });
       return resultWidgets;
     }
-    var answer = questionAnswers[questionNumber];
-    if (answer.values.last == isTruePressed) {
+    var answer = questionAnswers[questionNumber].answer;
+    if (answer == isTruePressed) {
       resultWidgets.add(const Icon(Icons.check_box,color: Colors.greenAccent,));
     } else {
       resultWidgets.add(const Icon(Icons.cancel,color: Colors.redAccent,));
