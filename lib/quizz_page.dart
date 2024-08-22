@@ -9,14 +9,8 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
-  int questionNumber = 0;
-  var questionAnswers = [
-  Quiz(question: "Question 1", answer: true),
-  Quiz(question: "Question 2", answer: false),
-  Quiz(question: "Question 3", answer: false),
-  Quiz(question: "Question 4", answer: true),
-  Quiz(question: "Question 5", answer: false),
-  ];
+  QuizManager quizManager = QuizManager();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +22,7 @@ class _QuizAppState extends State<QuizApp> {
             flex: 5,
             child: Center(
               child: Text(
-                getQuestions(),
+                quizManager.getQuestion(),
                 style: const TextStyle(fontSize: 20.0, color: Colors.white),
               ),
             ),
@@ -44,11 +38,9 @@ class _QuizAppState extends State<QuizApp> {
                     width: 100.0,
                     child: TextButton(
                       onPressed: () {
-                        //Todo:show next question.
-                        //Todo:check answer and update answer field.
-                        getAnswers(isTruePressed: false);
                         setState(() {
-                          questionNumber++;
+                          quizManager.getAnswer(isTruePressed: false);
+                          quizManager.getNextQuestion();
                         });
                       },
                       child: const Center(child: Text('False',style: TextStyle(color: Colors.white,fontSize: 18.0),),),
@@ -63,11 +55,9 @@ class _QuizAppState extends State<QuizApp> {
                     width: 100.0,
                     child: TextButton(
                       onPressed: () {
-                        //Todo:show next question.
-                        //Todo:check answer and update answer field.
-                        getAnswers(isTruePressed: true);
                           setState(() {
-                            questionNumber++;
+                            quizManager.getAnswer(isTruePressed: true);
+                            quizManager.getNextQuestion();
                           });
                       },
                       child: const Center(child: Text('True',style: TextStyle(color: Colors.white,fontSize: 18.0),)),
@@ -79,7 +69,8 @@ class _QuizAppState extends State<QuizApp> {
           ),
           Expanded(
             child: Row(
-              children: resultWidgets,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: quizManager.showAnswers(),
             ),
           ),
         ],
@@ -87,30 +78,4 @@ class _QuizAppState extends State<QuizApp> {
     );
   }
 
-  String getQuestions() {
-    if (questionNumber > questionAnswers.length - 1) {
-      return 'Quiz ended.';
-    }
-    var question = questionAnswers[questionNumber].question;
-    return question;
-  }
-
-  List<Icon> resultWidgets = [];
-  List<Icon> getAnswers({required bool isTruePressed}) {
-    debugPrint('questionNumber: $questionNumber');
-    if (questionNumber > questionAnswers.length - 1) {
-      resultWidgets.clear();
-      setState(() {
-        ///clear result section.
-      });
-      return resultWidgets;
-    }
-    var answer = questionAnswers[questionNumber].answer;
-    if (answer == isTruePressed) {
-      resultWidgets.add(const Icon(Icons.check_box,color: Colors.greenAccent,));
-    } else {
-      resultWidgets.add(const Icon(Icons.cancel,color: Colors.redAccent,));
-    }
-    return resultWidgets;
-  }
 }
